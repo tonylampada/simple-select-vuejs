@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="http://html5-training-in-hyderabad.blogspot.com.br/favicon.ico">
+  <title>Simple Select VueJS</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Font-awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css@0.5.1/dist/spectre.min.css"> -->
+  <link rel="stylesheet" href="main.css">
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <!-- Bootstrap core JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>Lista de Issues do projeto <a href="https://github.com/rg3915/orcamentos" target="_blank">Orçamentos</a></h1>
+      <a href="https://vuejsexamples.com/vuejs-tables-and-select-all-checkbox/" target="_blank">https://vuejsexamples.com/vuejs-tables-and-select-all-checkbox/</a>
+      <div class="text-uppercase text-bold">Number selected: {{ selected }}</div>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>
+              <label class="mycontainer">Select All
+                <input type="checkbox" v-model="selectAll" @click="select">
+                <span class="checkmark"></span>
+              </label>
+            </th>
+            <th class="text-center">Number</th>
+            <th class="text-center">ID</th>
+            <th>Title</th>
+            <th class="text-center">State</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in items">
+            <td>
+              <label class="mycontainer">
+                <input type="checkbox" :value="item.number" v-model="selected">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+            <td class="text-center">
+              {{ item.number }}
+            </td>
+            <td class="text-center">{{ item.id }}</td>
+            <td ><a :href="item.url" target="_blank">{{ item.title }}</a></td>
+            <td class="text-center">
+              <span v-if="item.state === 'open'">
+                <i class="fa fa-check-circle-o ok"></i>
+              </span>
+              <span v-else>
+                <i class="fa fa-times-circle-o no"></i>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        items: [],
+        selected: [],
+        selectAll: false
+      },
+      methods: {
+        list_items(){
+          axios.get('https://api.github.com/repos/rg3915/orcamentos/issues')
+          .then((result) => {
+            this.items = result.data.map((item) => {
+              return {number: item.number, id: item.id, title: item.title, state: item.state, url: item.url}
+            })
+          })
+        },
+        select(){
+          this.selected = [];
+          if (!this.selectAll) {
+            for (let i in this.items) {
+              this.selected.push(this.items[i].number);
+            }
+          }
+        }
+      },
+      mounted(){
+        this.list_items()
+      }
+    })
+  </script>
+</body>
+</html>
