@@ -10,7 +10,7 @@
   <!-- Font-awesome -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css@0.5.1/dist/spectre.min.css"> -->
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="style.css">
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <!-- Bootstrap core JS -->
@@ -23,7 +23,13 @@
     <div class="container">
       <h1>Lista de Issues do projeto <a href="https://github.com/rg3915/orcamentos" target="_blank">Orçamentos</a></h1>
       <a href="https://vuejsexamples.com/vuejs-tables-and-select-all-checkbox/" target="_blank">https://vuejsexamples.com/vuejs-tables-and-select-all-checkbox/</a>
+      <hr>
+
+      <a id="modal-preview" href="#modal-container-preview" role="button" class="btn btn-primary" data-toggle="modal">Launch demo modal</a>
+
       <div class="text-uppercase text-bold">Number selected: {{ selected }}</div>
+      <div class="text-uppercase text-bold">Total selected: {{ selected.length }}</div>
+
       <table class="table table-striped table-hover">
         <thead>
           <tr>
@@ -33,7 +39,6 @@
                 <span class="checkmark"></span>
               </label>
             </th>
-            <th class="text-center">Number</th>
             <th class="text-center">ID</th>
             <th>Title</th>
             <th class="text-center">State</th>
@@ -42,13 +47,10 @@
         <tbody>
           <tr v-for="item in items">
             <td>
-              <label class="mycontainer">
+              <label class="mycontainer">{{ item.number }}
                 <input type="checkbox" :value="item.number" v-model="selected">
                 <span class="checkmark"></span>
               </label>
-            </td>
-            <td class="text-center">
-              {{ item.number }}
             </td>
             <td class="text-center">{{ item.id }}</td>
             <td ><a :href="item.url" target="_blank">{{ item.title }}</a></td>
@@ -66,36 +68,51 @@
     </div>
   </div>
 
-  <script>
-    var app = new Vue({
-      el: '#app',
-      data: {
-        items: [],
-        selected: [],
-        selectAll: false
-      },
-      methods: {
-        list_items(){
-          axios.get('https://api.github.com/repos/rg3915/orcamentos/issues')
-          .then((result) => {
-            this.items = result.data.map((item) => {
-              return {number: item.number, id: item.id, title: item.title, state: item.state, url: item.url}
-            })
-          })
-        },
-        select(){
-          this.selected = [];
-          if (!this.selectAll) {
-            for (let i in this.items) {
-              this.selected.push(this.items[i].number);
-            }
-          }
-        }
-      },
-      mounted(){
-        this.list_items()
-      }
-    })
-  </script>
+  <div class="modal fade" id="modal-container-preview" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            Items Selected
+          </h4>
+        </div>
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>
+                  <label class="mycontainer">Select All
+                    <input type="checkbox" v-model="selectAll" @click="select">
+                    <span class="checkmark"></span>
+                  </label>
+                </th>
+                <th class="text-center">ID</th>
+                <th>Title</th>
+                <th class="text-center">State</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in selected">
+                <td>{{ item }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
 </body>
 </html>
