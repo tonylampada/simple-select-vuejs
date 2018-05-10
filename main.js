@@ -7,7 +7,7 @@ var app = new Vue({
   },
   methods: {
     list_items(){
-      axios.get('https://api.github.com/repos/rg3915/orcamentos/issues')
+      axios.get('https://api.github.com/repos/rg3915/simple-select-vuejs/issues')
       .then((result) => {
         this.items = result.data.map((item) => {
           return {number: item.number, id: item.id, title: item.title, state: item.state, url: item.url}
