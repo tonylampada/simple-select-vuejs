@@ -19,7 +19,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 </head>
 <body>
-  <div id="app">
+
+<div id="app">
     <div class="container">
       <h1>Lista de Issues</h1>
       <a href="https://vuejsexamples.com/vuejs-tables-and-select-all-checkbox/" target="_blank">https://vuejsexamples.com/vuejs-tables-and-select-all-checkbox/</a>
@@ -28,7 +29,7 @@
       <a href="https://github.com/rg3915/simple-select-vuejs/" target="_blank">GitHub: https://github.com/rg3915/simple-select-vuejs/</a>
       <hr>
 
-      <a id="modal-preview" href="#modal-container-preview" role="button" class="btn btn-primary" data-toggle="modal">Launch demo modal</a>
+      <a id="modal-preview" href="#modal-container-preview" role="button" class="btn btn-primary" data-toggle="modal">Preview</a>
 
       <div class="text-uppercase text-bold">Number selected: {{ selected }}</div>
       <div class="text-uppercase text-bold">Total selected: {{ selected.length }}</div>
@@ -69,7 +70,6 @@
         </tbody>
       </table>
     </div>
-  </div>
 
   <div class="modal fade" id="modal-container-preview" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -98,8 +98,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in selected">
-                <td>{{ item }}</td>
+              <tr v-for="(item, index) in selected" :key="item">
+                <td>{{ index }} - {{ item }}</td>
               </tr>
             </tbody>
           </table>
@@ -116,6 +116,9 @@
     </div>
   </div>
 
+</div>
+
   <script src="main.js"></script>
+
 </body>
 </html>
