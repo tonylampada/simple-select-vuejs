@@ -30,6 +30,13 @@ var app = new Vue({
       }
     }
   },
+  watch: {
+    selected(value){
+      this.selected_items = this.items.filter(
+        i => value.includes(i.number)
+      );
+    }
+  },
   mounted(){
     this.list_items()
   }
