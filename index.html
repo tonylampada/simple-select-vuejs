@@ -98,8 +98,23 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in selected" :key="item">
-                <td>{{ index }} - {{ item }}</td>
+              <tr v-for="item in selected_items">
+                <td>
+                  <label class="mycontainer">{{ item.number }}
+                    <input type="checkbox" :value="item.number" v-model="selected">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+                <td class="text-center">{{ item.id }}</td>
+                <td ><a :href="item.url" target="_blank">{{ item.title }}</a></td>
+                <td class="text-center">
+                  <span v-if="item.state === 'open'">
+                    <i class="fa fa-check-circle-o ok"></i>
+                  </span>
+                  <span v-else>
+                    <i class="fa fa-times-circle-o no"></i>
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>

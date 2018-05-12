@@ -3,6 +3,7 @@ var app = new Vue({
   data: {
     items: [],
     selected: [],
+    selected_items: [],
     selectAll: false,
   },
   methods: {
@@ -16,9 +17,15 @@ var app = new Vue({
     },
     select(){
       this.selected = [];
+      this.selected_items = [];
       if (!this.selectAll) {
         for (let i in this.items) {
           this.selected.push(this.items[i].number);
+        }
+        for (let j in this.items) {
+          this.selected_items.push(
+            {number: this.items[j].number, id: this.items[j].id, title: this.items[j].title, state: this.items[j].state, url: this.items[j].url}
+          );
         }
       }
     }
