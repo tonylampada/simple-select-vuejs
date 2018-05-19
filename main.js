@@ -17,10 +17,10 @@ var app = new Vue({
     },
     addToPreview(){
       this.selected_items = this.all_items.filter(item => item.selected)
+      this.all_items = this.all_items.filter(item => !item.selected)
       this.selected_items.map(item => {
         item.selected = false
       })
-      this.all_items = this.all_items.filter(item => !item.selected)
     },
     removeFromPreview(){
       window.alert('Exercicio pro Regis')
